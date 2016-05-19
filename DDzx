@@ -1,0 +1,303 @@
+
+package com.megau.ddxz;
+
+
+
+
+
+import android.app.Activity;
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+
+public class MainActivity extends Activity {
+	
+	
+	
+	private static int miscount =0;
+	private SQLiteDatabase db =null;
+	private final static String Database_name="STDU_Class.db";
+	public static int DatabaseVersion =1;
+	private final static String Table_name="Class";
+	
+	private final static String Table_ID="id";
+	private final static String Table_Room="classroom";
+	private final static String Table_Date="date";
+	private final static String Table_Week="Week";
+	private final static String Table_SorD_Week="single or double";
+	private final static String strSql = "create table "+Table_name 
+	 + "(" + Table_ID+" varchar(20) not null,"
+	 +Table_Room+" varchar(40) not null,"
+	 +Table_Date+" varchar(40) not null,"
+	 +Table_Week+" varchar(10) not null,"
+	 +Table_SorD_Week+" varchar(10) not null,"
+	 + "primary key(Table_ID)"
+	+ ")";
+	
+	
+	
+	
+	private Button button1 = null;
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		
+		
+		
+		
+		db=this.openOrCreateDatabase(Database_name, null, null);
+		try
+		{
+			db.execSQL(strSql);
+		}
+		catch(Exception e)
+		{
+		
+		}
+		
+		
+		
+		button1 =(Button)findViewById(R.id.button2);
+		button1.setOnClickListener(new OnClickListener(){
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent intent=new Intent();
+				intent.setClass(MainActivity.this, zixishichaxun.class);
+				MainActivity.this.startActivity(intent);
+			}
+		});
+	}
+
+	private SQLiteDatabase openOrCreateDatabase(String databaseName,
+			Object object, Object object2) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+	
+	
+}
+
+package com.megau.ddxz;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+
+
+public class zixishichaxun extends Activity {
+	
+	private Button button2 = null;
+	private Button button4 = null;
+	String str1;
+	String str2;
+	String str3;
+	String str4;
+	String str5;
+	
+	
+	//**************************************************************
+    private Spinner mySpinner1;    
+    private ArrayAdapter<String> adapter1;  
+    private Spinner mySpinner2;    
+    private ArrayAdapter<String> adapter2;  
+    private Spinner mySpinner3;    
+    private ArrayAdapter<String> adapter3;  
+    private Spinner mySpinner4;    
+    private ArrayAdapter<String> adapter4;  
+    private TextView showTextView;       
+    //**************************************************************
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.zixichaxun_layout);//11111111111,运用布局other
+	
+		button2 =(Button)findViewById(R.id.button2);//返回按键
+		button2.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent intent=new Intent();
+				intent.setClass(zixishichaxun.this, MainActivity.class);
+				zixishichaxun.this.startActivity(intent);
+			}
+		});
+		
+		button4 =(Button)findViewById(R.id.button4);//跳转到查询界面
+		button4.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				
+				str5=str1+"\n"+str2+"\n"+str3+"\n"+str4;
+				Intent intent2=new Intent();
+				intent2.putExtra("str5", str5);
+				intent2.setClass(zixishichaxun.this, zixishichaxun2.class);
+				zixishichaxun.this.startActivity(intent2);
+			}
+		});		
+		
+		//11111111111111111111111111111111111111111111111111111111111111111
+		String jiaoxuelou[]={"基础教学楼","第一教学楼"};
+		String shijianduan[]={"1-2","3-4","5-6","7-8","9-10"};
+		String dijizhou[]={"第1周","第2周","第3周","第4周","第5周","第6周","第7周","第8周","第9周","第10周","第11周","第12周","第13周","第14周","第15周","第16周","第17周","第18周"};
+		String xingqiji[]={"星期一","星期二","星期三","星期四","星期五","星期六","星期七"};
+		showTextView = (TextView)findViewById(R.id.textView4); 
+
+ 
+		mySpinner1 = (Spinner)findViewById(R.id.spinner1);
+		mySpinner2 = (Spinner)findViewById(R.id.spinner2);    
+		mySpinner3 = (Spinner)findViewById(R.id.spinner3);    
+		mySpinner4 = (Spinner)findViewById(R.id.spinner4);    
+        //第二步：为下拉列表定义一个适配器，这里就用到里前面定义的list。    
+        adapter1 = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, jiaoxuelou);    
+        adapter2 = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, shijianduan);    
+        adapter3 = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, dijizhou);    
+        adapter4 = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, xingqiji);    
+        
+        
+        //第三步：为适配器设置下拉列表下拉时的菜单样式。    
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);    
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);    
+        adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);    
+        adapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);    
+        
+        
+        //第四步：将适配器添加到下拉列表上    
+        mySpinner1.setAdapter(adapter1);  
+        mySpinner2.setAdapter(adapter2); 
+        mySpinner3.setAdapter(adapter3); 
+        mySpinner4.setAdapter(adapter4); 
+        
+        //第五步：为下拉列表设置各种事件的响应，这个事响应菜单被选中    
+        mySpinner1.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){  
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {    
+                // TODO Auto-generated method stub    
+                /* 将所选mySpinner 的值带入myTextView 中*/    
+            	showTextView.setText("您选择的是："+ adapter1.getItem(arg2));    
+                /* 将mySpinner 显示*/    
+            	str1=adapter1.getItem(arg2);
+                arg0.setVisibility(View.VISIBLE);    
+            }
+		@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+			}    	
+	});
+        
+        
+        mySpinner2.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){  
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {    
+                // TODO Auto-generated method stub    
+                /* 将所选mySpinner 的值带入myTextView 中*/    
+            	showTextView.setText("您选择的是："+ adapter2.getItem(arg2));    
+            	str2=adapter2.getItem(arg2);
+                arg0.setVisibility(View.VISIBLE);    
+            }
+		@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+			}    	
+	});
+        
+        
+        mySpinner3.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){  
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {    
+                // TODO Auto-generated method stub    
+                /* 将所选mySpinner 的值带入myTextView 中*/    
+            	showTextView.setText("您选择的是："+ adapter3.getItem(arg2));    
+                /* 将mySpinner 显示*/ 
+            	str3=adapter3.getItem(arg2);
+                arg0.setVisibility(View.VISIBLE);    
+            }
+		@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+			}    	
+	});
+        
+        
+        mySpinner4.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){  
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {    
+                // TODO Auto-generated method stub    
+                /* 将所选mySpinner 的值带入myTextView 中*/    
+            	showTextView.setText("您选择的是："+ adapter4.getItem(arg2));    
+                /* 将mySpinner 显示*/    
+            	str4=adapter4.getItem(arg2);
+                arg0.setVisibility(View.VISIBLE);    
+            }
+		@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+			}    	
+	});
+   
+	}
+	
+}
+
+
+
+
+
+
+
+
+package com.megau.ddxz;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.TextView;
+
+public class zixishichaxun2 extends Activity{
+
+	private Button button3 = null;
+	private TextView text=null;
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.zixishichaxun2_layout);
+		button3 =(Button)findViewById(R.id.button4);
+		button3.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent intent=new Intent();
+				intent.setClass(zixishichaxun2.this, zixishichaxun.class);
+				zixishichaxun2.this.startActivity(intent);
+			}
+		});
+		Intent intent=getIntent();
+		String str2=intent.getStringExtra("str5");
+		text=(TextView)findViewById(R.id.textView3);
+		text.setText(str2);
+	}
+
+}
